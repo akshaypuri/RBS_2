@@ -1,0 +1,51 @@
+package com.j2ee.loan;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.ResultSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class Simple
+ */
+@WebServlet("/search")
+public class search extends HttpServlet {
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		Dao dataaccess = new Dao();
+		
+		//to get access level of user
+		
+		String position = request.getParameter("position");
+		
+		//code to hit bank structure API
+		//returns boolean
+		boolean y = true;
+		
+		//if allowed to search
+		if(y){
+			ResultSet results = dataaccess.getsearch(request.getParameter("Data"));
+			results.toString();
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();
+			out.print(results);
+			out.flush();
+		}
+		else{
+			PrintWriter out = response.getWriter();
+			out.print("Not allowed to access");
+			out.flush();
+		}
+	}
+
+
+}
